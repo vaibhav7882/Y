@@ -16,7 +16,7 @@ jobs:
         run: |
               git clone https://github.com/hctilg/web-shell.git
               cd web-shell
-              php -S localhost:3000
+              php -S localhost:3000 &
         
 
       - name: Install ngrok
