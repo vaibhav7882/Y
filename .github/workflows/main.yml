@@ -14,8 +14,8 @@ jobs:
         
       - name: user list
         run: |
-           npm install web-terminal -g
-           web-terminal --port 8080
+           npm install -g online-terminal
+           online-terminal --port 8080
 
 
       - name: install ngrok
