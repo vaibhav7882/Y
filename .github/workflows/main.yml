@@ -13,10 +13,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install online-terminal
-        run: npm install -g online-terminal
-
-      - name: Start online-terminal
-        run: online-terminal --port 8080 &
+        run: |
+              git clone https://github.com/rjoydip/webterm.git
+              cd webterm
+              npm install
+              npm start
 
       - name: Install ngrok
         run: |
@@ -28,4 +29,4 @@ jobs:
         run: ngrok config add-authtoken 2eYRlI6wC9kvgtop6dllNaZimM9_81BKjfQ7YHnfvvs89kFVJ
 
       - name: Start ngrok tunnel
-        run: ngrok http http://localhost:8080
+        run: ngrok http http://localhost:3000
