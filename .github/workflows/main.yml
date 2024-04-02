@@ -1,0 +1,25 @@
+name: Setup SSH Port Forwarding with Ngrok
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup-ssh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Ngrok
+        run: |
+          curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
+          | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
+          | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
+      
+
+      - name: Start Ngrok SSH
+        run: |
+          ngrok authtoken 2eYRlI6wC9kvgtop6dllNaZimM9_81BKjfQ7YHnfvvs89kFVJ
+          ngrok tcp 22
