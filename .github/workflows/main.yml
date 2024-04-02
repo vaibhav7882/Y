@@ -14,21 +14,5 @@ jobs:
         
       - name: user list
         run: |
-          cut -d: -f1 /etc/passwd | sort | uniq
-        
-      - name: Install Ngrok
-        run: |
-          curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-          | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
-          | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
-      
-
-      - name: Generate SSH key pair
-        run: |
-          ssh-keygen -t rsa -b 2048 -N "" -f ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa.pub
-
-      - name: Start Ngrok SSH
-        run: |
-          ngrok authtoken 2eYRlI6wC9kvgtop6dllNaZimM9_81BKjfQ7YHnfvvs89kFVJ
-          ngrok tcp 22
+            node -v
+            npm -v
