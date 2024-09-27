@@ -24,6 +24,16 @@ jobs:
           -v /home/user/openvpn_data:/openvpn \
           openvpn/openvpn-as
 
-    
-    - name: Ip address 
-      run: curl ifconfig.me
+    - name: Install ngrok
+      run: |
+        curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
+        echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+        sudo apt update && sudo apt install ngrok
+        ngrok config add-authtoken 2meWncMEwuJw3ukgopscQV6ckYl_61KnEpPMLfRvLQGzjA8PU
+
+    - name: Start ngrok tunnel
+      run: |
+        ngrok http 943
+
+    - name: View OpenVPN container logs
+      run: docker logs -f openvpn-as
