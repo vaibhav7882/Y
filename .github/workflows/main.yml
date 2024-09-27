@@ -1,32 +1,30 @@
-name: Setup SSH Port Forwarding with Ngrok
+name: OpenVPN Setup
 
-on:
-  push:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  setup-ssh:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Install online-terminal
-        run: |
-              git clone https://github.com/hctilg/web-shell.git
-              cd web-shell
-              php -S localhost:3000 &
-        
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
 
-      - name: Install ngrok
-        run: |
-          curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc \
-          | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" \
-          | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
+    - name: Pull OpenVPN Docker image
+      run: docker pull openvpn/openvpn-as
 
-      - name: Configure ngrok
-        run: ngrok config add-authtoken 2eYRlI6wC9kvgtop6dllNaZimM9_81BKjfQ7YHnfvvs89kFVJ
+    - name: Run OpenVPN container
+      run: |
+        docker run -d \
+          --name=openvpn-as --cap-add=NET_ADMIN \
+          -p 943:943 -p 443:443 -p 1194:1194/udp \
+          -v /home/user/openvpn_data:/openvpn \
+          openvpn/openvpn-as
 
-      - name: Start ngrok tunnel
-        run: ngrok http http://localhost:3000
+    - name: View OpenVPN container logs
+      run: docker logs -f openvpn-as
+    - name: Ip address 
+      run: curl ifconfig.me
