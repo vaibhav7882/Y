@@ -24,7 +24,6 @@ jobs:
           -v /home/user/openvpn_data:/openvpn \
           openvpn/openvpn-as
 
-    - name: View OpenVPN container logs
-      run: docker logs -f openvpn-as
+    
     - name: Ip address 
       run: curl ifconfig.me
